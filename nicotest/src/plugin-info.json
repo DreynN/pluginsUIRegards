@@ -1,0 +1,34 @@
+{
+  "name": "nicotest",
+  "description": "",
+  "version": "1.0.0",
+  "author": "nvongsanti",
+  "company": "",
+  "email": "nvongsanti",
+  "url": "",
+  "license": "GPL-3.0",
+  "type": "SERVICE",
+  "conf": {
+    "applicationModes": [
+      "ONE",
+      "MANY"
+    ],
+    "entityTypes": [
+      "DATA"
+    ],
+    "static": {
+      "static1": {
+        "type": "string",
+        "required": false
+      }
+    },
+    "dynamic": {
+      "dynamic1": {
+        "label": "bar",
+        "type": "string",
+        "required": false
+      }
+    },
+    "showButtonsBar": false
+  }
+}
