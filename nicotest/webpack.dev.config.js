@@ -38,7 +38,7 @@ const conf = webpackConfigurator
   .merge({
     plugins: [
       new webpack.DefinePlugin({
-        GATEWAY_HOSTNAME: JSON.stringify(process.env.GATEWAY_PLUGINS || 'http://gateway_to_modify_in_your_plugin_webpack_config.cs'),
+        GATEWAY_HOSTNAME: JSON.stringify(process.env.GATEWAY_PLUGINS || 'http://10.31.37.11'),
       }),
     ],
   })

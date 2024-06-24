@@ -16,12 +16,17 @@
  * You should have received a copy of the GNU General Public License
  * along with REGARDS. If not, see <http://www.gnu.org/licenses/>.
  **/
-import { initPlugin } from '@regardsoss/plugins-api'
-import getReducer from './reducer'
-import EditContainer from './containers/EditContainer'
+import { getRequestsReducer } from './clients/RequestsClient'
+import { getModelAttributesReducer } from './clients/ModelAttributesClient'
 
-import messages from './i18n'
-import styles from './styles'
-import pluginInfo from './plugin-info.json'
-
-initPlugin(EditContainer, pluginInfo, getReducer, messages, styles)
+/**
+ * Plugin reducer builder function.
+ * @param {string} pluginInstanceId plugin instance ID, must be used to generate unique namespaces and store paths
+ * @return {*} reducers configuration for plugin instance
+ */
+export default function getReducer(pluginInstanceId) {
+  return {
+    requests: getRequestsReducer(pluginInstanceId),
+    attributes: getModelAttributesReducer(pluginInstanceId),
+  }
+}

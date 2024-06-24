@@ -1,1 +1,5 @@
+/*!
+ * Programatically add the following
+ */
+
 /*! Copyright CNES */

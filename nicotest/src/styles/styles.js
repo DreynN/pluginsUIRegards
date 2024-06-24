@@ -25,5 +25,39 @@
 export default function getStyles(theme) {
   return {
     // put here specific styles (updated on theme change)
+    // the document styles
+    body: {
+      padding: '5px 15px 5px 5px',
+      // Material UI look and feel
+      fontSize: '14px',
+      fontFamily: 'Roboto, sans-serif',
+    },
+
+    contentWrapper: {
+      color: theme.palette.textColor,
+      display: 'flex',
+      alignItems: 'center',
+      flexDirection: 'column',
+    },
+
+    attributesWrapper: {
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+    },
+
+    attributesChipsWrapper: {
+      display: 'flex',
+      paddingBottom: '5px',
+      paddingTop: '5px',
+      flexWrap: 'wrap',
+    },
+
+    filters: {
+      iconColor: theme.palette.accent1Color,
+      style: {
+        margin: '5px',
+      },
+    },
   }
 }

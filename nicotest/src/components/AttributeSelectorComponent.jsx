@@ -16,12 +16,35 @@
  * You should have received a copy of the GNU General Public License
  * along with REGARDS. If not, see <http://www.gnu.org/licenses/>.
  **/
-import { initPlugin } from '@regardsoss/plugins-api'
-import getReducer from './reducer'
-import EditContainer from './containers/EditContainer'
+import Avatar from 'material-ui/Avatar'
+import Chip from 'material-ui/Chip'
+import { themeContextType } from '@regardsoss/theme'
 
-import messages from './i18n'
-import styles from './styles'
-import pluginInfo from './plugin-info.json'
+/**
+ * Common component to display an attribute model
+ */
+class AttributeSelectorComponent extends React.Component {
+  static propTypes = {
+    label: PropTypes.string.isRequired,
+    // node to show as filter icon
+    icon: PropTypes.node.isRequired,
+  }
 
-initPlugin(EditContainer, pluginInfo, getReducer, messages, styles)
+  static contextTypes = {
+    ...themeContextType,
+  }
+
+
+  render() {
+    const { label, icon } = this.props
+    const { moduleTheme: { filters } } = this.context
+    return (
+      <Chip style={filters.style}>
+        <Avatar color={filters.iconColor} icon={icon} />
+        { label }
+      </Chip>
+    )
+  }
+}
+
+export default AttributeSelectorComponent
