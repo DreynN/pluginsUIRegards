@@ -20,9 +20,11 @@ import { connect } from '@regardsoss/redux'
 import { AccessShapes, DataManagementShapes } from '@regardsoss/shape'
 import { i18nContextType } from '@regardsoss/i18n'
 import { CatalogClient } from '@regardsoss/client'
+import { DownloadFileClient } from '../clientsfiles/main'
 import { themeContextType } from '@regardsoss/theme'
 import { LoadableContentDisplayDecorator } from '@regardsoss/display-control'
 import { BasicSignalSelectors} from '@regardsoss/store-utils'
+import withFileClient from './withFileClient'
 import withModelAttributesClient from './withModelAttributesClient'
 import EditComponent from '../components/EditComponent'
 
@@ -38,9 +40,11 @@ export class EditContainer extends React.Component {
    * @return {*} list of component properties extracted from redux state
    */
   static mapStateToProps(state, props) {
-    const { modelAttributesClient} = props
+    const { modelAttributesClient, fileClient } = props
     return {
       modelAttributeList: modelAttributesClient.selectors.getResult(state),
+      //TODO voir si c'est correct
+      fileClientRes: fileClient.selectors.getResult(state),
     }
   }
 
@@ -51,9 +55,11 @@ export class EditContainer extends React.Component {
    * @return {*} list of component methods to interact with the store
    */
   static mapDispatchToProps(dispatch, props) {
-    const { modelAttributesClient } = props
+    const { modelAttributesClient, fileClient } = props
     return {
       fetchModelAttributes: (searchContext) => dispatch(modelAttributesClient.actions.getCommonModelAttributes(searchContext)),
+      //TODO voir si c'est correct car il faut peut etre ajouter l'action getFileBuildResults
+      fetchFile: (searchContext) => dispatch(fileClient.actions.getDownloadFile(searchContext)),
     }
   }
 
@@ -67,10 +73,17 @@ export class EditContainer extends React.Component {
       actions: PropTypes.instanceOf(CatalogClient.SearchEntitiesCommonModelAttributesActions),
       selectors: PropTypes.instanceOf(BasicSignalSelectors),
     }).isRequired,
+    fileClient: PropTypes.shape({
+      actions: PropTypes.instanceOf(DownloadFileClient.SearchDownloadFileActions),
+      selectors: PropTypes.instanceOf(BasicSignalSelectors),
+    }).isRequired,
     // From mapDispatchToProps
     fetchModelAttributes: PropTypes.func.isRequired,
+    fetchFile: PropTypes.func.isRequired,
     // form mapStatesToprops
     modelAttributeList: DataManagementShapes.AttributeModelArray,
+    //TODO chercher le type de donnée qui est retourné
+    //fileClientRes: ,
   }
 
   static contextTypes = {
@@ -88,10 +101,11 @@ export class EditContainer extends React.Component {
   componentDidMount() {
     const { searchContext } = this.props.target
     this.props.fetchModelAttributes(searchContext).then(() => {
-      // Ignore error, just play attributes
-      this.setState({
-        isLoading: false,
-      })
+      this.props.fetchFile(searchContext).then(() => {
+        this.setState({
+          isLoading: false,
+        })
+      }) 
     })
   }
 
@@ -123,7 +137,7 @@ export class EditContainer extends React.Component {
 }
 
 // Connect clients to props and retrieve injected clients as props
-export default withModelAttributesClient(
+export default withModelAttributesClient(withFileClient(
   // REDUX connected container
   connect(EditContainer.mapStateToProps, EditContainer.mapDispatchToProps)(EditContainer),
-)
+))

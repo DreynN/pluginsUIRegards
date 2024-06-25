@@ -24,7 +24,7 @@ import { ClientConfBuilder } from '@regardsoss/plugins-api'
  *
  * @author Léo Mieulet
  */
-const pluginName = 'fem-edit'
+const pluginName = 'nicotest'
 /**
  * the store key used in reducer.js
  */
